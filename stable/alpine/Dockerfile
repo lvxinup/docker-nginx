@@ -4,6 +4,13 @@ LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ENV NGINX_VERSION 1.12.2
 
+ADD echo-nginx-module-0.58.tar.gz /usr/src/
+ADD nginx_http_push_module-0.692.tar.gz /usr/src/
+ADD ngx_devel_kit-0.2.19.tar.gz /usr/src/
+ADD openssl-OpenSSL_1_0_2k.tar.gz /usr/src/
+ADD pcre-8.10.tar.gz /usr/src/
+ADD zlib-1.2.5.tar.gz /usr/src/
+
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& CONFIG="\
 		--prefix=/etc/nginx \
@@ -49,6 +56,10 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 		--with-compat \
 		--with-file-aio \
 		--with-http_v2_module \
+                --add-module=../nginx_http_push_module-0.692 \
+                --with-pcre=../pcre-8.10 \
+                --with-zlib=../zlib-1.2.5 \
+                --with-openssl=../openssl-1.0.0e \
 	" \
 	&& addgroup -S nginx \
 	&& adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx nginx \
